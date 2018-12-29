@@ -79,7 +79,7 @@ $fileList = $client->listFiles([
 Installation is via Composer:
 
 ```bash
-$ composer require cwhite92/b2-sdk-php
+$ composer require tarikozket/b2-sdk-php
 ```
 
 ## Tests
