@@ -286,8 +286,8 @@ class Client
 
         $files = [];
 
-        if (!isset($options['BucketId']) && isset($options['BucketName'])) {
-            $options['BucketId'] = $this->getBucketIdFromName($options['BucketName']);
+        if (!isset($options['bucketId']) && isset($options['BucketName'])) {
+            $options['bucketId'] = $this->getBucketIdFromName($options['BucketName']);
             unset($options['BucketName']);
         }
 
