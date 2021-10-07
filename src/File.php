@@ -2,7 +2,7 @@
 
 namespace ChrisWhite\B2;
 
-class File
+class File implements \JsonSerializable
 {
     protected $id;
     protected $name;
@@ -110,5 +110,20 @@ class File
     public function getUploadTimestamp()
     {
         return $this->uploadTimestamp;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'hash' => $this->hash,
+            'size' => $this->size,
+            'type' => $this->type,
+            'info' => $this->info,
+            'bucketId' => $this->bucketId,
+            'action' => $this->action,
+            'uploadTimestamp' => $this->uploadTimestamp
+        ];
     }
 }
