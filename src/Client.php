@@ -275,20 +275,20 @@ class Client
      */
     public function listFiles(array $options)
     {
-        // if FileName is set, we only attempt to retrieve information about that single file.
-        $fileName = !empty($options['FileName']) ? $options['FileName'] : null;
+        $nextFileName = $fileName = null;
 
-        $nextFileName = null;
-        $maxFileCount = 1000;
+        // if FileName is set, we only attempt to retrieve information about that single file.
+        if (!empty($options['FileName'])) {
+            $nextFileName = $fileName = $options['FileName'];
+            $options['maxFileCount']= 1;
+            unset($options['FileName']);
+        }
+
         $files = [];
 
         if (!isset($options['BucketId']) && isset($options['BucketName'])) {
             $options['BucketId'] = $this->getBucketIdFromName($options['BucketName']);
-        }
-
-        if ($fileName) {
-            $nextFileName = $fileName;
-            $maxFileCount = 1;
+            unset($options['BucketName']);
         }
 
         // B2 returns, at most, 1000 files per "page". Loop through the pages and compile an array of File objects.
@@ -297,11 +297,9 @@ class Client
                 'headers' => [
                     'Authorization' => $this->authToken
                 ],
-                'json' => [
-                    'bucketId' => $options['BucketId'],
+                'json' => array_merge($options, [
                     'startFileName' => $nextFileName,
-                    'maxFileCount' => $maxFileCount,
-                ]
+                ])
             ]);
 
             foreach ($response['files'] as $file) {
