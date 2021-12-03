@@ -61,7 +61,7 @@ class Client
             );
         }
 
-        $response = $this->client->request('POST', $this->apiUrl.'/b2_create_bucket', [
+        $response = $this->client->requestJson('POST', $this->apiUrl.'/b2_create_bucket', [
             'headers' => [
                 'Authorization' => $this->authToken,
             ],
@@ -94,7 +94,7 @@ class Client
             $options['BucketId'] = $this->getBucketIdFromName($options['BucketName']);
         }
 
-        $response = $this->client->request('POST', $this->apiUrl.'/b2_update_bucket', [
+        $response = $this->client->requestJson('POST', $this->apiUrl.'/b2_update_bucket', [
             'headers' => [
                 'Authorization' => $this->authToken,
             ],
@@ -117,7 +117,7 @@ class Client
     {
         $buckets = [];
 
-        $response = $this->client->request('POST', $this->apiUrl.'/b2_list_buckets', [
+        $response = $this->client->requestJson('POST', $this->apiUrl.'/b2_list_buckets', [
             'headers' => [
                 'Authorization' => $this->authToken,
             ],
@@ -145,7 +145,7 @@ class Client
             $options['BucketId'] = $this->getBucketIdFromName($options['BucketName']);
         }
 
-        $this->client->request('POST', $this->apiUrl.'/b2_delete_bucket', [
+        $this->client->requestJson('POST', $this->apiUrl.'/b2_delete_bucket', [
             'headers' => [
                 'Authorization' => $this->authToken
             ],
@@ -176,7 +176,7 @@ class Client
         }
 
         // Retrieve the URL that we should be uploading to.
-        $response = $this->client->request('POST', $this->apiUrl.'/b2_get_upload_url', [
+        $response = $this->client->requestJson('POST', $this->apiUrl.'/b2_get_upload_url', [
             'headers' => [
                 'Authorization' => $this->authToken
             ],
@@ -213,7 +213,7 @@ class Client
             $options['FileContentType'] = 'b2/x-auto';
         }
 
-        $response = $this->client->request('POST', $uploadEndpoint, [
+        $response = $this->client->requestJson('POST', $uploadEndpoint, [
             'headers' => [
                 'Authorization' => $uploadAuthToken,
                 'Content-Type' => $options['FileContentType'],
@@ -262,7 +262,7 @@ class Client
             $requestUrl = sprintf('%s/file/%s/%s', $this->downloadUrl, $options['BucketName'], $options['FileName']);
         }
 
-        $response = $this->client->request('GET', $requestUrl, $requestOptions, false);
+        $response = $this->client->requestJson('GET', $requestUrl, $requestOptions, false);
 
         return isset($options['SaveAs']) ? true : $response;
     }
@@ -293,7 +293,7 @@ class Client
 
         // B2 returns, at most, 1000 files per "page". Loop through the pages and compile an array of File objects.
         while (true) {
-            $response = $this->client->request('POST', $this->apiUrl.'/b2_list_file_names', [
+            $response = $this->client->requestJson('POST', $this->apiUrl.'/b2_list_file_names', [
                 'headers' => [
                     'Authorization' => $this->authToken
                 ],
@@ -351,7 +351,7 @@ class Client
             }
         }
 
-        $response = $this->client->request('POST', $this->apiUrl.'/b2_get_file_info', [
+        $response = $this->client->requestJson('POST', $this->apiUrl.'/b2_get_file_info', [
             'headers' => [
                 'Authorization' => $this->authToken
             ],
@@ -393,7 +393,7 @@ class Client
             $options['FileId'] = $file->getId();
         }
 
-        $this->client->request('POST', $this->apiUrl.'/b2_delete_file_version', [
+        $this->client->requestJson('POST', $this->apiUrl.'/b2_delete_file_version', [
             'headers' => [
                 'Authorization' => $this->authToken
             ],
@@ -429,7 +429,7 @@ class Client
      */
     protected function authorizeAccount()
     {
-        $response = $this->client->request('GET', 'https://api.backblazeb2.com/b2api/v1/b2_authorize_account', [
+        $response = $this->client->requestJson('GET', 'https://api.backblazeb2.com/b2api/v1/b2_authorize_account', [
             'auth' => [$this->accountId, $this->applicationKey]
         ]);
 

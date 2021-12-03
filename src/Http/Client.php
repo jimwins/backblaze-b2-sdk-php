@@ -21,7 +21,7 @@ class Client extends GuzzleClient
      * @param bool $asJson
      * @return mixed|string
      */
-    public function request($method, $uri = null, array $options = [], $asJson = true)
+    public function requestJson($method, $uri = null, array $options = [], $asJson = true)
     {
         $response = parent::request($method, $uri, $options);
 
